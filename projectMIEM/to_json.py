@@ -4,21 +4,16 @@ import numpy as np
 from itertools import cycle
 
 dict_values = {}
-file = open('4_1.json', encoding="utf-8")
-data = json.load(file)
 start_pos = 5
 end_pos = 12
 
 def data(data):
     for d in data:
-        # print('DATA:', d['data'])
-        # print('IIIIIIIIIIII: ', i)
         if len(d['data']) >= 3:
             cnt = 1
             for i in range(len(d['data'])):
                 if re.match(r'\s{1,7}\d\.', string=d['data'][i]):
                     name = d['data'][i]
-                    # print('Добавил эту строку: ', name)
                     name = str(cnt) + ' |' + d['data'][i]
                     if name in dict:
                         name = str(cnt) + name
@@ -26,26 +21,19 @@ def data(data):
                     else:
                         dict[name] = []
                     cnt += 1
-                    # print('Я НЕ В ЦИКЛЕ: ', name)
 
     key = list(dict.keys())
     j = 0
     k = 0
+    arr_data = []
     for d in data:
-        print('REAL DATA: ', d['data'])
         if k < 30:
             if len(d['data'][start_pos:end_pos]):
                 for i in range(len(d['data'][start_pos:end_pos])):
-                    # print(d['data'][start_pos:end_pos][i])
-                    # print(list(dict.keys()))
-                    print('KEY: ', key[j])
-                    # print('СЮДА: ', dict[key])
-                    # print('YESSSS' if key in dict else 'NO')
-                    print('ЭТО: ', d['data'][start_pos:end_pos][i])
+                    arr_data.append((key[j], ['data'][start_pos:end_pos][i]))
                     dict[key[j]].append(d['data'][start_pos:end_pos][i])
                     j += 1
                 k += 1
-                print('----------')
         else:
             break
 
@@ -58,7 +46,6 @@ def save_data(data):
             cnt = 1
             for i in range(len(d['data'])):
                 if (re.match(r'\s{1,7}\d\.', string=d['data'][i])):
-                    # print('NAME: ', d['data'][i])
                     name = str(cnt) + ' |' + d['data'][i]
                     if name in arr:
                         name = str(cnt) + name
@@ -69,13 +56,9 @@ def save_data(data):
                         names.append(name)
                     cnt += 1
         if len(d['data'][start_pos:end_pos]):
-            # print('KEY:', key)
             for i in range(len(d['data'][start_pos:end_pos])):
                 arr.append(d['data'][start_pos:end_pos][i])
                 values.append(d['data'][start_pos:end_pos][i])
-                # print('DATA:', d['data'][start_pos:end_pos][i])
-                # dict[key].append(d['data'][start_pos:end_pos][i])
-            # print('--------')
     return arr, names, values
 
 def distance(arr, names):
@@ -89,9 +72,8 @@ def distance(arr, names):
     sort_names.append(names[-1])
     for j in range(len(sort_names) - 1):
         a = sort_names[j]
-
+        b = sort_names[j+1]
         distance_name = abs(names.index(a) - names.index(b))
-        # print(distance_name)
         distances_names.append(distance_name)
     distances_names[-1] += 1
 
@@ -105,40 +87,24 @@ def distance(arr, names):
     distance_values.append(len(arr))
     return distance_values, distances_names
 
-
-# distance_values, distances_names = distance(arr, names)
-#
-# print('distances_names', distances_names)
-# print('distance_values', distance_values)
-# print(arr)
-# print('')
-# start = 0
-
-
 def fill_gaps(distance_values, distances_names, arr):
+    start = 0
+    arr_index = []
     for gap in range(len(distance_values)):
-        # print('distance_values[gap]:', distance_values[gap])
-        print('arr[start:distance_values[gap]]:', arr[start:distance_values[gap]])
         for i in arr[start:distance_values[gap]]:
-            # print(arr.index(i))
             if distances_names[gap] == 1:
-                print(i)
+                arr_index.append(i)
             elif distances_names[gap] == 2:
                 if arr.index(i) % distances_names[gap] == 0:
-                    print('TRUE INDEX: ', arr.index(i), 'i:', i)
+                    arr_index.append(arr.index(i))
                 elif arr.index(i) % distances_names[gap] != 0:
-                    print('INDEX: ', arr.index(i), 'i:', i)
+                    arr_index.append(arr.index(i))
             elif distances_names[gap] == 3:
-                print('INDEX: ', arr.index(i), 'i:', arr.index(i) + 3)
+                arr_index.append(arr.index(i) + 3)
         start = 0
         start += distance_values[gap]
-        print('-------------------')
 
-
-# fill_gaps(distance_values, distances_names, arr)
-
-
-def make_list(distance_values, distances_names):
+def make_list(distance_values, distances_names, arr):
     listochek = []
     start_names = 0
     start_distance = 5
@@ -155,9 +121,6 @@ def make_list(distance_values, distances_names):
         start_distance += len(values) + distances_names[i]
         start_names += distances_names[i] + len(values)
     return listochek
-
-
-# listochek = make_list(distance_values, distances_names)
 
 
 def make_dictionary(dictionary, listochek):
