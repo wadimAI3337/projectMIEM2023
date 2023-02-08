@@ -3,7 +3,7 @@ import re
 import json
 
 dictionary = {}
-file = open('4_1.json', encoding="utf-8")
+file = open('files/4_1.json', encoding="utf-8")
 data = json.load(file)
 
 arr, names, values = save_data(data)
