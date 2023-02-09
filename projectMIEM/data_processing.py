@@ -2,7 +2,6 @@ from to_json import make_list, distance, save_data, fill_gaps, make_dictionary
 import re
 import json
 
-dictionary = {}
 file = open('files/4_1.json', encoding="utf-8")
 data = json.load(file)
 
@@ -10,7 +9,7 @@ arr, names, values = save_data(data)
 distance_values, distances_names = distance(arr, names)
 fill_gaps(distance_values, distances_names, arr)
 listochek = make_list(distance_values, distances_names, arr)
-make_dictionary(dictionary, listochek)
+dictionary = make_dictionary(listochek)
 
 
 def executer(values):

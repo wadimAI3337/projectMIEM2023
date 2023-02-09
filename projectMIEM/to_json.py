@@ -7,6 +7,7 @@ dict_values = {}
 start_pos = 5
 end_pos = 12
 
+
 def data(data):
     for d in data:
         if len(d['data']) >= 3:
@@ -37,6 +38,7 @@ def data(data):
         else:
             break
 
+
 def save_data(data):
     names = []
     arr = []
@@ -61,6 +63,7 @@ def save_data(data):
                 values.append(d['data'][start_pos:end_pos][i])
     return arr, names, values
 
+
 def distance(arr, names):
     sum = 0
     sort_names = []
@@ -72,7 +75,7 @@ def distance(arr, names):
     sort_names.append(names[-1])
     for j in range(len(sort_names) - 1):
         a = sort_names[j]
-        b = sort_names[j+1]
+        b = sort_names[j + 1]
         distance_name = abs(names.index(a) - names.index(b))
         distances_names.append(distance_name)
     distances_names[-1] += 1
@@ -86,6 +89,7 @@ def distance(arr, names):
         distance_values.append(sum)
     distance_values.append(len(arr))
     return distance_values, distances_names
+
 
 def fill_gaps(distance_values, distances_names, arr):
     start = 0
@@ -103,6 +107,7 @@ def fill_gaps(distance_values, distances_names, arr):
                 arr_index.append(arr.index(i) + 3)
         start = 0
         start += distance_values[gap]
+
 
 def make_list(distance_values, distances_names, arr):
     listochek = []
@@ -123,9 +128,11 @@ def make_list(distance_values, distances_names, arr):
     return listochek
 
 
-def make_dictionary(dictionary, listochek):
+def make_dictionary(listochek):
+    dictionary = {}
     for lst in listochek:
         for item in lst:
             if item[0] not in dictionary:
                 dictionary[item[0]] = []
             dictionary[item[0]].append(item[1])
+    return dictionary
